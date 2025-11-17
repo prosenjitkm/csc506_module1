@@ -63,6 +63,8 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .card-header h2 {
@@ -79,6 +81,122 @@ h1 {
     border-radius: 12px;
     font-size: 12px;
     font-weight: 500;
+}
+
+.btn-info-small {
+    background: #f0f2f5;
+    color: #1877f2;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid #e4e6eb;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-info-small:hover {
+    background: #e4e6eb;
+}
+
+/* Use Case Info Section */
+.use-case-info {
+    background: linear-gradient(135deg, #f7f8fa 0%, #ffffff 100%);
+    border: 1px solid #e4e6eb;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    to {
+        opacity: 1;
+        max-height: 1000px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+}
+
+.use-case-info h3 {
+    color: #1877f2;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.use-case-info h4 {
+    color: #1c1e21;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.use-case-info ul {
+    margin: 8px 0;
+    padding-left: 24px;
+}
+
+.use-case-info li {
+    color: #65676b;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 6px;
+}
+
+.use-case-info .when-to-use {
+    background: #e7f3ff;
+    padding: 12px 16px;
+    border-radius: 6px;
+    border-left: 4px solid #1877f2;
+    margin-top: 16px;
+    color: #1c1e21;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.complexity-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.complexity-item {
+    background: #ffffff;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid #e4e6eb;
+}
+
+.complexity-label {
+    font-size: 12px;
+    color: #65676b;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.complexity-value {
+    font-size: 18px;
+    color: #1877f2;
+    font-weight: 700;
+}
+
+.complexity-explanation {
+    font-size: 13px;
+    color: #1c1e21;
+    margin-top: 4px;
 }
 
 .card-body {
@@ -164,6 +282,24 @@ button {
 
 .btn-success:hover {
     background: #36a420;
+}
+
+.btn-info {
+    background: #17a2b8;
+    color: white;
+}
+
+.btn-info:hover {
+    background: #138496;
+}
+
+.btn-search {
+    background: #ffc107;
+    color: #1c1e21;
+}
+
+.btn-search:hover {
+    background: #e0a800;
 }
 
 /* Visual Container */

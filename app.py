@@ -69,6 +69,18 @@ def stack_clear():
     return stack_controller.clear()
 
 
+@app.route("/api/stack/peek", methods=["GET"])
+@log_api
+def stack_peek():
+    return stack_controller.peek()
+
+
+@app.route("/api/stack/search", methods=["POST"])
+@log_api
+def stack_search():
+    return stack_controller.search()
+
+
 # Queue routes
 @app.route("/api/queue/enqueue", methods=["POST"])
 @log_api
@@ -92,6 +104,18 @@ def queue_state():
 @log_api
 def queue_clear():
     return queue_controller.clear()
+
+
+@app.route("/api/queue/peek", methods=["GET"])
+@log_api
+def queue_peek():
+    return queue_controller.peek()
+
+
+@app.route("/api/queue/search", methods=["POST"])
+@log_api
+def queue_search():
+    return queue_controller.search()
 
 
 # LinkedList routes
@@ -119,11 +143,38 @@ def linkedlist_clear():
     return linked_list_controller.clear()
 
 
+@app.route("/api/linkedlist/search", methods=["POST"])
+@log_api
+def linkedlist_search():
+    return linked_list_controller.search()
+
+
 # Complexity route
 @app.route("/api/complexity", methods=["GET"])
 @log_api
 def complexity():
     return complexity_controller.get_complexity()
+
+
+# Detailed complexity route (with time and space)
+@app.route("/api/complexity/detailed", methods=["GET"])
+@log_api
+def detailed_complexity():
+    return complexity_controller.get_detailed_complexity()
+
+
+# Use cases route
+@app.route("/api/use-cases", methods=["GET"])
+@log_api
+def use_cases():
+    return complexity_controller.get_use_cases()
+
+
+# All info route (complexities + use cases)
+@app.route("/api/info", methods=["GET"])
+@log_api
+def all_info():
+    return complexity_controller.get_all_info()
 
 
 # Benchmark route

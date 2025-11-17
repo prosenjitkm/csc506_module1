@@ -23,8 +23,10 @@
             <div class="card-header">
                 <h2>📚 Stack (LIFO)</h2>
                 <span class="badge">Last In, First Out</span>
+                <button onclick="toggleInfo('stack')" class="btn-info-small">ℹ️ When to Use</button>
             </div>
             <div class="card-body">
+                <div id="stack-info" class="use-case-info" style="display: none;"></div>
                 <div class="controls">
                     <input id="stack-input" type="text" placeholder="Enter a value..." class="modern-input">
                     <button onclick="pushStack()" class="btn-primary">
@@ -32,6 +34,12 @@
                     </button>
                     <button onclick="popStack()" class="btn-secondary">
                         <span class="btn-icon">➖</span> Pop
+                    </button>
+                    <button onclick="peekStack()" class="btn-info">
+                        <span class="btn-icon">👁️</span> Peek
+                    </button>
+                    <button onclick="searchStack()" class="btn-search">
+                        <span class="btn-icon">🔍</span> Search
                     </button>
                     <button onclick="clearStack()" class="btn-danger">
                         <span class="btn-icon">🗑️</span> Clear
@@ -47,8 +55,10 @@
             <div class="card-header">
                 <h2>🎫 Queue (FIFO)</h2>
                 <span class="badge">First In, First Out</span>
+                <button onclick="toggleInfo('queue')" class="btn-info-small">ℹ️ When to Use</button>
             </div>
             <div class="card-body">
+                <div id="queue-info" class="use-case-info" style="display: none;"></div>
                 <div class="controls">
                     <input id="queue-input" type="text" placeholder="Enter a value..." class="modern-input">
                     <button onclick="enqueueQueue()" class="btn-primary">
@@ -56,6 +66,12 @@
                     </button>
                     <button onclick="dequeueQueue()" class="btn-secondary">
                         <span class="btn-icon">➖</span> Dequeue
+                    </button>
+                    <button onclick="peekQueue()" class="btn-info">
+                        <span class="btn-icon">👁️</span> Peek
+                    </button>
+                    <button onclick="searchQueue()" class="btn-search">
+                        <span class="btn-icon">🔍</span> Search
                     </button>
                     <button onclick="clearQueue()" class="btn-danger">
                         <span class="btn-icon">🗑️</span> Clear
@@ -71,8 +87,10 @@
             <div class="card-header">
                 <h2>🔗 Linked List</h2>
                 <span class="badge">Node-Based Structure</span>
+                <button onclick="toggleInfo('linked_list')" class="btn-info-small">ℹ️ When to Use</button>
             </div>
             <div class="card-body">
+                <div id="linked_list-info" class="use-case-info" style="display: none;"></div>
                 <div class="controls">
                     <input id="ll-input" type="text" placeholder="Enter a value..." class="modern-input">
                     <button onclick="insertLL()" class="btn-primary">
@@ -80,6 +98,9 @@
                     </button>
                     <button onclick="deleteLL()" class="btn-secondary">
                         <span class="btn-icon">➖</span> Delete
+                    </button>
+                    <button onclick="searchLL()" class="btn-search">
+                        <span class="btn-icon">🔍</span> Search
                     </button>
                     <button onclick="clearLL()" class="btn-danger">
                         <span class="btn-icon">🗑️</span> Clear
@@ -102,6 +123,11 @@
                         <option value="stack">Stack</option>
                         <option value="queue">Queue</option>
                         <option value="linked_list">Linked List</option>
+                    </select>
+                    <select id="bench-op" class="modern-select">
+                        <option value="insert">Insert Operation</option>
+                        <option value="delete">Delete Operation</option>
+                        <option value="search">Search Operation</option>
                     </select>
                     <button onclick="runBenchmark()" class="btn-success">
                         <span class="btn-icon">🚀</span> Run Benchmark

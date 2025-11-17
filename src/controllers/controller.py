@@ -55,6 +55,27 @@ class StackController:
         log.info("Stack cleared")
         return jsonify(result)
 
+    @log_method
+    def peek(self):
+        """Handle peek request"""
+        result = self.stack_service.peek()
+        log.info(f"Peeked at stack: {result.get('value')}")
+        return jsonify(result)
+
+    @log_method
+    def search(self):
+        """Handle search request"""
+        data = request.get_json()
+        value = data.get("value")
+
+        if value is None or value == "":
+            log.warning("Search request rejected - missing value")
+            return jsonify({"error": "Value is required"}), 400
+
+        log.info(f"Searching for value: {value}")
+        result = self.stack_service.search(value)
+        return jsonify(result)
+
 
 class QueueController:
     """Controller for Queue endpoints"""
@@ -101,6 +122,27 @@ class QueueController:
         """Handle clear request"""
         result = self.queue_service.clear()
         log.info("Queue cleared")
+        return jsonify(result)
+
+    @log_method
+    def peek(self):
+        """Handle peek request"""
+        result = self.queue_service.peek()
+        log.info(f"Peeked at queue: {result.get('value')}")
+        return jsonify(result)
+
+    @log_method
+    def search(self):
+        """Handle search request"""
+        data = request.get_json()
+        value = data.get("value")
+
+        if value is None or value == "":
+            log.warning("Search request rejected - missing value")
+            return jsonify({"error": "Value is required"}), 400
+
+        log.info(f"Searching for value: {value}")
+        result = self.queue_service.search(value)
         return jsonify(result)
 
 
@@ -153,6 +195,20 @@ class LinkedListController:
         log.info("LinkedList cleared")
         return jsonify(result)
 
+    @log_method
+    def search(self):
+        """Handle search request"""
+        data = request.get_json()
+        value = data.get("value")
+
+        if value is None or value == "":
+            log.warning("Search request rejected - missing value")
+            return jsonify({"error": "Value is required"}), 400
+
+        log.info(f"Searching for value: {value}")
+        result = self.linked_list_service.search(value)
+        return jsonify(result)
+
 
 class ComplexityController:
     """Controller for Complexity endpoints"""
@@ -174,6 +230,46 @@ class ComplexityController:
         log.info(f"Getting complexity for: {ds} - {op}")
         complexity = self.complexity_service.get_complexity_info(ds, op)
         return jsonify({"complexity": complexity})
+
+    @log_method
+    def get_detailed_complexity(self):
+        """Handle detailed complexity request with time and space"""
+        ds = request.args.get("ds")
+        op = request.args.get("op")
+
+        if not ds or not op:
+            log.warning("Detailed complexity request rejected - missing parameters")
+            return jsonify({"error": "Missing parameters"}), 400
+
+        log.info(f"Getting detailed complexity for: {ds} - {op}")
+        detailed = self.complexity_service.get_detailed_complexity(ds, op)
+        return jsonify(detailed)
+
+    @log_method
+    def get_use_cases(self):
+        """Handle use cases request"""
+        ds = request.args.get("ds")
+
+        if not ds:
+            log.warning("Use cases request rejected - missing data structure")
+            return jsonify({"error": "Data structure parameter required"}), 400
+
+        log.info(f"Getting use cases for: {ds}")
+        use_cases = self.complexity_service.get_use_cases(ds)
+        return jsonify(use_cases)
+
+    @log_method
+    def get_all_info(self):
+        """Handle request for complete information"""
+        ds = request.args.get("ds")
+
+        if not ds:
+            log.warning("All info request rejected - missing data structure")
+            return jsonify({"error": "Data structure parameter required"}), 400
+
+        log.info(f"Getting all info for: {ds}")
+        all_info = self.complexity_service.get_all_info(ds)
+        return jsonify(all_info)
 
 
 class BenchmarkController:

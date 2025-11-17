@@ -63,6 +63,46 @@ class StackService:
         log.info("Stack cleared")
         return {"state": [], "message": "Stack cleared"}
 
+    @log_service
+    def peek(self):
+        """Peek at the top element without removing it"""
+        stack = self.repository.get_stack()
+        if stack.is_empty():
+            log.warning("Attempted to peek at empty stack")
+            return {"error": "Stack is empty", "value": None}
+
+        value = stack.peek()
+        log.info(f"Peeked at stack top: '{value}'")
+        return {
+            "value": value,
+            "state": stack.to_list(),
+            "size": stack.size()
+        }
+
+    @log_service
+    def search(self, value):
+        """Search for a value in the stack"""
+        stack = self.repository.get_stack()
+        index = stack.search(value)
+
+        if index == -1:
+            log.info(f"Value '{value}' not found in stack")
+            return {
+                "found": False,
+                "index": -1,
+                "message": f"Value '{value}' not found",
+                "state": stack.to_list()
+            }
+
+        log.info(f"Found value '{value}' at index {index} from top")
+        return {
+            "found": True,
+            "index": index,
+            "message": f"Found at position {index} from top",
+            "state": stack.to_list(),
+            "size": stack.size()
+        }
+
 
 class QueueService:
     """Service for Queue operations"""
@@ -116,6 +156,46 @@ class QueueService:
         self.repository.reset_queue()
         log.info("Queue cleared")
         return {"state": [], "message": "Queue cleared"}
+
+    @log_service
+    def peek(self):
+        """Peek at the front element without removing it"""
+        queue = self.repository.get_queue()
+        if queue.is_empty():
+            log.warning("Attempted to peek at empty queue")
+            return {"error": "Queue is empty", "value": None}
+
+        value = queue.peek()
+        log.info(f"Peeked at queue front: '{value}'")
+        return {
+            "value": value,
+            "state": queue.to_list(),
+            "size": queue.size()
+        }
+
+    @log_service
+    def search(self, value):
+        """Search for a value in the queue"""
+        queue = self.repository.get_queue()
+        index = queue.search(value)
+
+        if index == -1:
+            log.info(f"Value '{value}' not found in queue")
+            return {
+                "found": False,
+                "index": -1,
+                "message": f"Value '{value}' not found",
+                "state": queue.to_list()
+            }
+
+        log.info(f"Found value '{value}' at index {index} from front")
+        return {
+            "found": True,
+            "index": index,
+            "message": f"Found at position {index} from front",
+            "state": queue.to_list(),
+            "size": queue.size()
+        }
 
 
 class LinkedListService:
@@ -174,6 +254,30 @@ class LinkedListService:
         log.info("LinkedList cleared")
         return {"state": [], "message": "LinkedList cleared"}
 
+    @log_service
+    def search(self, value):
+        """Search for a value in the linked list"""
+        linked_list = self.repository.get_linked_list()
+        index = linked_list.search(value)
+
+        if index == -1:
+            log.info(f"Value '{value}' not found in linked list")
+            return {
+                "found": False,
+                "index": -1,
+                "message": f"Value '{value}' not found",
+                "state": linked_list.to_list()
+            }
+
+        log.info(f"Found value '{value}' at index {index}")
+        return {
+            "found": True,
+            "index": index,
+            "message": f"Found at position {index}",
+            "state": linked_list.to_list(),
+            "size": linked_list.size()
+        }
+
 
 class ComplexityService:
     """Service for complexity analysis"""
@@ -186,6 +290,26 @@ class ComplexityService:
         complexity = get_complexity(data_structure, operation)
         log.debug(f"Retrieved complexity for {data_structure}.{operation}: {complexity}")
         return complexity
+
+    def get_detailed_complexity(self, data_structure, operation):
+        """Get detailed complexity with time and space"""
+        from src.utils.complexity import get_detailed_complexity
+        return get_detailed_complexity(data_structure, operation)
+
+    def get_use_cases(self, data_structure):
+        """Get use case information for a data structure"""
+        from src.utils.complexity import get_use_cases
+        use_cases = get_use_cases(data_structure)
+        log.debug(f"Retrieved use cases for {data_structure}")
+        return use_cases
+
+    def get_all_info(self, data_structure):
+        """Get complete information including all complexities and use cases"""
+        from src.utils.complexity import get_all_complexities, get_use_cases
+        return {
+            "complexities": get_all_complexities(data_structure),
+            "use_cases": get_use_cases(data_structure)
+        }
 
 
 class BenchmarkService:
@@ -231,13 +355,26 @@ class BenchmarkService:
         from src.models.datastructures import Stack
         s = Stack()
 
-        start = time.perf_counter()
-        for i in range(size):
-            s.push(i)
-        end = time.perf_counter()
+        # Pre-populate for delete and search operations
+        if operation in ["delete", "search"]:
+            for i in range(size):
+                s.push(i)
 
+        start = time.perf_counter()
+
+        if operation == "insert":
+            for i in range(size):
+                s.push(i)
+        elif operation == "delete":
+            for i in range(size):
+                s.pop()
+        elif operation == "search":
+            for i in range(size):
+                s.search(i % size)  # Search for various values
+
+        end = time.perf_counter()
         elapsed = end - start
-        log.debug(f"Stack benchmark (size={size}): {elapsed:.6f}s")
+        log.debug(f"Stack {operation} benchmark (size={size}): {elapsed:.6f}s")
         return elapsed
 
     def _benchmark_queue(self, size, operation):
@@ -245,13 +382,26 @@ class BenchmarkService:
         from src.models.datastructures import Queue
         q = Queue()
 
-        start = time.perf_counter()
-        for i in range(size):
-            q.enqueue(i)
-        end = time.perf_counter()
+        # Pre-populate for delete and search operations
+        if operation in ["delete", "search"]:
+            for i in range(size):
+                q.enqueue(i)
 
+        start = time.perf_counter()
+
+        if operation == "insert":
+            for i in range(size):
+                q.enqueue(i)
+        elif operation == "delete":
+            for i in range(size):
+                q.dequeue()
+        elif operation == "search":
+            for i in range(size):
+                q.search(i % size)  # Search for various values
+
+        end = time.perf_counter()
         elapsed = end - start
-        log.debug(f"Queue benchmark (size={size}): {elapsed:.6f}s")
+        log.debug(f"Queue {operation} benchmark (size={size}): {elapsed:.6f}s")
         return elapsed
 
     def _benchmark_linked_list(self, size, operation):
@@ -259,12 +409,26 @@ class BenchmarkService:
         from src.models.datastructures import LinkedList
         ll = LinkedList()
 
-        start = time.perf_counter()
-        for i in range(size):
-            ll.insert_at_head(i)
-        end = time.perf_counter()
+        # Pre-populate for delete and search operations
+        if operation in ["delete", "search"]:
+            for i in range(size):
+                ll.insert_at_head(i)
 
+        start = time.perf_counter()
+
+        if operation == "insert":
+            for i in range(size):
+                ll.insert_at_head(i)
+        elif operation == "delete":
+            # Delete from head for consistency
+            for i in range(size):
+                ll.delete(i)
+        elif operation == "search":
+            for i in range(size):
+                ll.search(i % size)  # Search for various values
+
+        end = time.perf_counter()
         elapsed = end - start
-        log.debug(f"LinkedList benchmark (size={size}): {elapsed:.6f}s")
+        log.debug(f"LinkedList {operation} benchmark (size={size}): {elapsed:.6f}s")
         return elapsed
 
